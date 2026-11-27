@@ -21,18 +21,7 @@ body { font-family:Arial,Helvetica,sans-serif; background:#f8fafc; color:var(--i
 .offer-pill { background:var(--red); border-radius:999px; padding:5px 9px; }
 .offer-strip b { color:#7b8493; }.offer-strip .desktop-only { color:#d1d5db; }
 main { max-width:1024px; margin:auto; padding:24px 16px 64px; }
-.hero { min-height:260px; border-radius:16px; position:relative; overflow:hidden; background:linear-gradient(135deg,#e30613 0%,#c90412 58%,#90030e 100%); color:#fff; box-shadow:0 5px 12px rgba(0,0,0,.12); }
-.hero-content { position:relative; z-index:2; padding:24px 32px; }
-.partner-row { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
-.partner-logo { height:46px; background:#fff; border-radius:10px; display:flex; align-items:center; padding:7px 10px; }
-.partner-logo img { height:30px; object-fit:contain; }.airtel-partner img { width:140px; }.starlink-partner img { width:88px; }
-.times { font-size:22px; color:#ffc9cd; font-weight:900; }
 .eyebrow { margin:0 0 12px; color:#ffcbd0; text-transform:uppercase; font-size:12px; line-height:1.2; letter-spacing:.19em; font-weight:800; }
-.hero h1 { margin:0 0 8px; font-size:44px; line-height:.98; letter-spacing:-.045em; max-width:760px; }
-.hero-lead { max-width:760px; margin:0; color:#ffd7da; font-size:15px; line-height:1.4; }
-.hero-note { margin:8px 0 0; color:#ffbec3; font-size:12px; }
-.hero-ring { position:absolute; width:255px; height:255px; right:-64px; bottom:-96px; border:28px solid rgba(255,196,201,.18); border-radius:50%; }
-.hero-dot { position:absolute; width:11px; height:11px; right:32px; bottom:32px; border-radius:50%; background:#fff; }
 .plans-section { margin-top:32px; }
 .plans-heading { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:16px; }
 .eyebrow.red { color:#e30613; margin-bottom:7px; }
@@ -93,9 +82,8 @@ footer { background:var(--blue); color:#aebfe7; padding:24px 16px 0; }
   .topbar { height:64px; }.topbar-inner { padding:0 12px; }.brand img { height:44px; }
   .nav { gap:8px; }.nav>a span:last-child { display:none; }.nav>a { padding:4px; }
   .language { height:28px; }.offer-strip { height:38px; font-size10px; gap:6px; }.desktop-only,.offer-strip b { display:none; }
-  main { padding:16px 12px 48px; }.hero { min-height:280px; }.hero-content { padding:24px 16px 20px; }
-  .partner-row { margin-bottom:12px; }.partner-logo { height:46px; }.airtel-partner img { width:132px; }.starlink-partner img { width:82px; }
-  .eyebrow { font-size11px; }.hero h1 { font-size34px; line-height:1.02; }.hero-lead { font-size14px; }.hero-note { font-size11px; }
+  main { padding:16px 12px 48px; }
+  .eyebrow { font-size11px; }
   .plans-section { margin-top:24px; }.plans-heading h2 { font-size20px; }.subheading { font-size12px; }.service-status { display:none; }
   .plans-section--bundles { width:calc(100% + 24px); margin:24px -12px 0; padding:18px 12px 24px; border-radius:0; }
   .plan-grid { max-width:680px; padding:0; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
